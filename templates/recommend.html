@@ -1,0 +1,629 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Sentiment Analysis of Youtube comments</title>
+	<script
+  src="https://code.jquery.com/jquery-3.1.1.js"
+  integrity="sha256-16cdPddA6VdVInumRGo6IbivbERE8p7CQR3HzTBuELA="
+  crossorigin="anonymous"></script>
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.2.9/semantic.css" />
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.2.9/semantic.min.js"></script>
+      <script src="https://code.highcharts.com/highcharts.js"></script>
+      <script src="https://code.highcharts.com/modules/exporting.js"></script>
+	<link rel="stylesheet" type="text/css" href="./static/style.css">
+  <script src="./static/Chart.js"></script>
+  <script src="./static/index.js"></script>
+</head>
+<body id="image">
+
+<div class="ui inverted fluid medium visible very wide two item labeled icon menu">
+
+    <a href="/search" class="item">
+      <i class="search icon" ></i>
+      Search
+    </a>
+    <a href="/video" class="item">
+      <i class="video play icon"></i>
+      Videos
+      </a>
+
+  </div>
+<a id="bottom" target="blank"><div class="ui right floated inverted segment">
+<p id="videodetails">
+</p></div></a>
+
+<div id="sear" class="ui container">
+
+	<form method="POST" action="/searc">
+	<div style="margin-top: 100px;" class="ui huge fluid action input">
+	  <input id="kk" type="text" name="query" placeholder="Search...">
+	  <!-- <div class=" ui massive inverted black button">Recommend</div> -->
+	  <div>
+    <input type="submit" value="Recommend" id="calculate" onclick="loading()" class="right attached ui huge inverted button">
+</div>
+	</div>
+  </form>
+
+
+<div style="margin-top: 60px; font-size: 1.1em;" class="ui very relaxed inverted tiny middle aligned animated selection divided list">
+  <div class="ui inverted segment" style="font-weight: bolder; font-size: 1.1em;"> &emsp;&emsp; &emsp;&emsp;&emsp;Title &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;Percent</div>
+  <div id="l0" class="item">
+    <div class="right floated content">
+      <div id="per1" class="ui inverted segment" style="font-weight: bold;"></div>
+    </div>
+    <img  id="imag" class="ui tiny image">
+    <div class="content">
+      <div id="h0" class="header"></div>
+    </div>
+  </div>
+  <div id="l1" class="item">
+    <div class="right floated content">
+      <div  id="per2" class="ui inverted segment" style="font-weight: bold;"></div>
+    </div>
+    <img id="imag0" class="ui tiny image">
+    <div class="content">
+      <div id="h1" class="header"></div>
+    </div>
+  </div>
+  <div id="l2" class="item">
+    <div class="right floated content">
+     <div id="per3" class="ui inverted segment" style="font-weight: bold;"></div>
+    </div>
+    <img id="imag1" class="ui tiny image">
+    <div class="content">
+      <div id="h2" class="header"></div>
+    </div>
+  </div>
+    <div id="l3" class="item">
+      <div class="right floated content">
+     <div id="per4" class="ui inverted segment" style="font-weight: bold;"></div>
+    </div>
+    <img id="imag2" class="ui tiny image">
+    <div class="content">
+      <div id="h3" class="header"></div>
+    </div>
+  </div>
+    <div id="l4" class="item">
+      <div class="right floated content">
+     <div id="per5" class="ui inverted segment" style="font-weight: bold;"></div>
+    </div>
+    <img id="imag3" class="ui tiny image">
+    <div class="content">
+      <div id="h4" class="header"></div>
+    </div>
+  </div>
+</div>
+
+</div>
+
+</div>
+
+
+<div style="margin-top: 20px; width: 20%;" class="ui container huge green button" onclick="hello()">Show More Details</div>
+
+<div class="ui container" style="margin-top: 50px; height: 800px; width: 1000px;">
+<div id="container2"></div>
+<div style="margin-top: 20px;"></div>
+<div id="container1" style="min-width: 310px; height: 400px; max-width: 1000px; margin: 0 auto"></div>
+</div>
+
+
+
+
+<div id="load">
+
+<div class="ui one column stackable center aligned page grid">
+   <div class="column wide">
+<svg class="spinner" width="65px" height="65px" viewBox="0 0 66 66" xmlns="http://www.w3.org/2000/svg">
+   <circle class="path" fill="none" stroke-width="6" stroke-linecap="round" cx="33" cy="33" r="30"></circle>
+</svg>
+   </div>
+</div>
+</div>
+
+
+
+
+</body>
+</html>
+<style>
+
+.spinner {
+  -webkit-animation: rotator 1.4s linear infinite;
+          animation: rotator 1.4s linear infinite;
+}
+
+@-webkit-keyframes rotator {
+  0% {
+    -webkit-transform: rotate(0deg);
+            transform: rotate(0deg);
+  }
+  100% {
+    -webkit-transform: rotate(270deg);
+            transform: rotate(270deg);
+  }
+}
+
+@keyframes rotator {
+  0% {
+    -webkit-transform: rotate(0deg);
+            transform: rotate(0deg);
+  }
+  100% {
+    -webkit-transform: rotate(270deg);
+            transform: rotate(270deg);
+  }
+}
+.path {
+  stroke-dasharray: 187;
+  stroke-dashoffset: 0;
+  -webkit-transform-origin: center;
+          transform-origin: center;
+  -webkit-animation: dash 1.4s ease-in-out infinite, colors 5.6s ease-in-out infinite;
+          animation: dash 1.4s ease-in-out infinite, colors 5.6s ease-in-out infinite;
+}
+
+@-webkit-keyframes colors {
+  0% {
+    stroke: #4285F4;
+  }
+  25% {
+    stroke: #DE3E35;
+  }
+  50% {
+    stroke: #F7C223;
+  }
+  75% {
+    stroke: #1B9A59;
+  }
+  100% {
+    stroke: #4285F4;
+  }
+}
+
+@keyframes colors {
+  0% {
+    stroke: #4285F4;
+  }
+  25% {
+    stroke: #DE3E35;
+  }
+  50% {
+    stroke: #F7C223;
+  }
+  75% {
+    stroke: #1B9A59;
+  }
+  100% {
+    stroke: #4285F4;
+  }
+}
+@-webkit-keyframes dash {
+  0% {
+    stroke-dashoffset: 187;
+  }
+  50% {
+    stroke-dashoffset: 46.75;
+    -webkit-transform: rotate(135deg);
+            transform: rotate(135deg);
+  }
+  100% {
+    stroke-dashoffset: 187;
+    -webkit-transform: rotate(450deg);
+            transform: rotate(450deg);
+  }
+}
+@keyframes dash {
+  0% {
+    stroke-dashoffset: 187;
+  }
+  50% {
+    stroke-dashoffset: 46.75;
+    -webkit-transform: rotate(135deg);
+            transform: rotate(135deg);
+  }
+  100% {
+    stroke-dashoffset: 187;
+    -webkit-transform: rotate(450deg);
+            transform: rotate(450deg);
+  }
+}
+
+::-webkit-scrollbar {
+    width: 10px;
+    background-color: #303030;
+}
+
+::-webkit-scrollbar-track {
+    -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
+    border-radius: 10px;
+    background-color: #303030;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: grey;
+    border-radius: 10px;
+    -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.5);
+}
+
+#sear{
+
+	margin-top: 100px;
+}
+.ui.inverted.segment, .ui.primary.inverted.segment {
+    background: rgba(27, 28, 29, 0.51);
+    color: rgba(255, 255, 255, 0.9);
+}
+.ui.input {
+  color: #fff;
+}
+.ui.input input {
+  margin: 0em;
+  max-width: 100%;
+  -webkit-box-flex: 1;
+  -ms-flex: 1 0 auto;
+  flex: 1 0 auto;
+  outline: none;
+  -webkit-tap-highlight-color: rgba(255, 255, 255, 0);
+  text-align: left;
+  line-height: 1.21428571em;
+  font-family: 'Lato', 'Helvetica Neue', Arial, Helvetica, sans-serif;
+  padding: 0.67857143em 1em;
+  background: rgba(255, 255, 255, 0);
+  border: 2px solid rgb(255, 255, 255);
+  color: rgba(255, 255, 255, 0.87);
+  border-radius: 0.28571429rem;
+  -webkit-transition: box-shadow 0.1s ease, border-color 0.1s ease;
+  transition: box-shadow 0.1s ease, border-color 0.1s ease;
+  box-shadow: none;
+}
+.ui.input.focus input,
+.ui.input input:focus {
+  border-color: #fff;
+  background:rgba(255, 255, 255, 0);
+  color: #fff;
+  box-shadow: none;
+}
+.ui.action.input:not([class*="left action"]) input:focus {
+  border-right-color: #ffffff !important;
+}
+.ui.inverted.selection.list > .item, .ui.inverted.selection.list > .item {
+    background: rgba(0, 0, 0, 0.35);
+    color: rgba(255, 255, 255, 0.5);
+}
+
+
+body{
+  background: no-repeat center center fixed;
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
+  -webkit-transition: background 300ms ease-in 200ms;
+  -moz-transition: background 300ms ease-in 200ms;
+  -o-transition: background 300ms ease-in 200ms;
+  transition: background 300ms ease-in 200ms;
+}
+
+
+
+
+
+
+</style>
+<script>
+
+        ranks = {{ query|tojson }};
+        nums = {{ number|tojson }};
+        like = {{ like|tojson }};
+        dislike = {{ dislike|tojson }};
+        pos = {{ pos|tojson }};
+        neg = {{ neg|tojson }};
+        console.log(like);
+        console.log(dislike);
+        console.log(pos);
+        console.log(neg);
+        var l1 = parseInt(like[0]);
+        var l2 = parseInt(like[1]);
+        var l3 = parseInt(like[2]);
+        var l4 = parseInt(like[3]);
+        var l5 = parseInt(like[4]);
+        var dl1 = parseInt(dislike[0]);
+        var dl2 = parseInt(dislike[1]);
+        var dl3 = parseInt(dislike[2]);
+        var dl4 = parseInt(dislike[3]);
+        var dl5 = parseInt(dislike[4]);
+        var psen1 = parseInt(pos[0]);
+        var psen2 = parseInt(pos[1]);
+        var psen3 = parseInt(pos[2]);
+        var psen4 = parseInt(pos[3]);
+        var psen5 = parseInt(pos[4]);
+        var nsen1 = parseInt(neg[0]);
+        var nsen2 = parseInt(neg[1]);
+        var nsen3 = parseInt(neg[2]);
+        var nsen4 = parseInt(neg[3]);
+        var nsen5 = parseInt(neg[4]);
+
+
+
+        console.log(nums);
+        var f = "https://www.youtube.com/watch?v=" +ranks[0];
+        var s = "https://www.youtube.com/watch?v=" +ranks[1];
+        var t = "https://www.youtube.com/watch?v=" +ranks[2];
+        var g = "https://www.youtube.com/watch?v=" +ranks[3];
+        var h = "https://www.youtube.com/watch?v=" +ranks[4];
+        var p1 = Math.round(nums[0] * 100) / 100 +"%";
+        var p2 = Math.round(nums[1] * 100) / 100 +"%";
+        var p3 = Math.round(nums[2] * 100) / 100 +"%";
+        var p4 = Math.round(nums[3] * 100) / 100 +"%";
+        var p5 = Math.round(nums[4] * 100) / 100 +"%";
+        var np1 = Math.round(nums[0] * 100) / 100;
+        var np2 = Math.round(nums[1] * 100) / 100;
+        var np3 = Math.round(nums[2] * 100) / 100;
+        var np4 = Math.round(nums[3] * 100) / 100;
+        var np5 = Math.round(nums[4] * 100) / 100;
+        document.getElementById("per1").innerHTML = p1;
+        document.getElementById("per2").innerHTML = p2;
+        document.getElementById("per3").innerHTML = p3;
+        document.getElementById("per4").innerHTML = p4;
+        document.getElementById("per5").innerHTML = p5;
+
+
+
+		document.getElementById("l0").setAttribute("onclick", "location.href=f");
+		document.getElementById("l1").setAttribute("onclick", "location.href=s");
+		document.getElementById("l2").setAttribute("onclick", "location.href=t");
+		document.getElementById("l3").setAttribute("onclick", "location.href=g");
+		document.getElementById("l4").setAttribute("onclick", "location.href=h");
+
+		var rank = "";
+$('#load').hide();
+	function loading(){
+		if (rank == ""){
+
+			$('#load').show();
+			console.log(rank);
+
+
+		}
+		else{
+
+		$('#load').hide();
+
+		}
+	}
+
+
+var vi1 = ranks[0];
+var v = ranks[1];
+var b = ranks[2];
+var c = ranks[3];
+var d = ranks[4];
+var title1 = "";
+var title2 = "";
+var title3 = "";
+var title4 = "";
+var title5 = "";
+$.get(
+	"https://www.googleapis.com/youtube/v3/videos",{
+		part:'snippet',
+		key : 'AIzaSyDdLpCjSPAShuLZMbLW78fsUCJHK6ag9rE',
+		id : vi1},
+		function (data) {
+			$.each(data.items,function(i, item){
+				console.log(item);
+				thumbnail1 = item.snippet.thumbnails.medium.url;
+				title1 = item.snippet.title;
+				console.log(thumbnail1);
+				 document.getElementById("h0").innerHTML = title1;
+				document.getElementById('imag').src = thumbnail1;
+			});
+
+	}
+);
+$.get(
+	"https://www.googleapis.com/youtube/v3/videos",{
+		part:'snippet',
+		key : 'AIzaSyDdLpCjSPAShuLZMbLW78fsUCJHK6ag9rE',
+		id : v},
+		function (data) {
+			$.each(data.items,function(i, item){
+				console.log(item);
+				thumbnail2 = item.snippet.thumbnails.medium.url;
+				title2 = item.snippet.title;
+				console.log(thumbnail2);
+				document.getElementById("h1").innerHTML = title2;
+				document.getElementById('imag0').src = thumbnail2;
+			});
+
+	}
+);
+$.get(
+	"https://www.googleapis.com/youtube/v3/videos",{
+		part:'snippet',
+		key : 'AIzaSyDdLpCjSPAShuLZMbLW78fsUCJHK6ag9rE',
+		id : b},
+		function (data) {
+			$.each(data.items,function(i, item){
+				console.log(item);
+				thumbnail3 = item.snippet.thumbnails.medium.url;
+				title3 = item.snippet.title;
+				console.log(thumbnail3);
+				document.getElementById("h2").innerHTML = title3;
+				document.getElementById('imag1').src = thumbnail3;
+			});
+
+	}
+);
+$.get(
+	"https://www.googleapis.com/youtube/v3/videos",{
+		part:'snippet',
+		key : 'AIzaSyDdLpCjSPAShuLZMbLW78fsUCJHK6ag9rE',
+		id : c},
+		function (data) {
+			$.each(data.items,function(i, item){
+				console.log(item);
+				thumbnail4 = item.snippet.thumbnails.medium.url;
+				title4 = item.snippet.title;
+				console.log(thumbnail4);
+				document.getElementById("h3").innerHTML = title4;
+				document.getElementById('imag2').src = thumbnail4;
+			});
+
+	}
+);
+$.get(
+	"https://www.googleapis.com/youtube/v3/videos",{
+		part:'snippet',
+		key : 'AIzaSyDdLpCjSPAShuLZMbLW78fsUCJHK6ag9rE',
+		id : d},
+		function (data) {
+			$.each(data.items,function(i, item){
+				console.log(item);
+				thumbnail5 = item.snippet.thumbnails.medium.url;
+				title5 = item.snippet.title;
+				console.log(thumbnail5);
+				document.getElementById("h4").innerHTML = title5;
+				document.getElementById('imag3').src = thumbnail5;
+			});
+
+	}
+);
+
+function hello() {
+
+
+	Highcharts.chart('container2', {
+    chart: {
+        plotBackgroundColor: null,
+        plotBorderWidth: null,
+        plotShadow: false,
+        type: 'pie'
+    },
+    title: {
+        text: 'Overall Video Percent'
+    },
+    tooltip: {
+        pointFormat: '{series.name}: <b>{point.y}%</b>'
+    },
+    plotOptions: {
+        pie: {
+            allowPointSelect: true,
+            cursor: 'pointer',
+            dataLabels: {
+                enabled: true,
+                format: '<b>{point.name}</b>: {point.y} %',
+                style: {
+                    color: (Highcharts.theme && Highcharts.theme.contrastTextColor) || 'black'
+                }
+            }
+        }
+    },
+    series: [{
+        name: 'Percent',
+        colorByPoint: true,
+        data: [{
+            name: title1,
+            y: np1
+        }, {
+            name: title2,
+            y: np2,
+            sliced: true,
+            selected: true
+        }, {
+            name: title3,
+            y: np3
+        }, {
+            name: title4,
+            y: np4
+        }, {
+            name: title5,
+            y: np5
+        }]
+    }]
+});
+
+	var chart = Highcharts.chart('container1', {
+
+    chart: {
+        type: 'column'
+    },
+
+    title: {
+        text: 'Detailed Chart '
+    },
+
+
+    legend: {
+        align: 'right',
+        verticalAlign: 'middle',
+        layout: 'vertical'
+    },
+
+    xAxis: {
+        categories: [title1, title2, title3,title4,title5],
+        labels: {
+            x: -10
+        }
+    },
+
+    yAxis: {
+        allowDecimals: false,
+        title: {
+            text: 'Amount'
+        }
+    },
+
+    series: [{
+        name: 'Like',
+        data: [l1, l2, l3, l4, l5]
+    },{
+        name: 'Dislikes ',
+        data: [dl1, dl2, dl3, dl4, dl5]
+    },{
+        name: ' Positive Sentiment Count',
+        data: [psen1, psen2, psen3, psen4, psen5]
+    }, {
+        name: 'Negative Sentiment Count',
+        data: [nsen1, nsen2, nsen3, nsen4, nsen5]
+    }],
+
+    responsive: {
+        rules: [{
+            condition: {
+                maxWidth: 500
+            },
+            chartOptions: {
+                legend: {
+                    align: 'center',
+                    verticalAlign: 'bottom',
+                    layout: 'horizontal'
+                },
+                yAxis: {
+                    labels: {
+                        align: 'left',
+                        x: 0,
+                        y: -5
+                    },
+                    title: {
+                        text: null
+                    }
+                },
+                subtitle: {
+                    text: null
+                },
+                credits: {
+                    enabled: false
+                }
+            }
+        }]
+    }
+});
+
+
+
+
+};
+
+
+</script>

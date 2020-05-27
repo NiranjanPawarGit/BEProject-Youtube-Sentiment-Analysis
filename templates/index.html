@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Sentiment Analysis of Youtube comments</title>
+	<script
+  src="https://code.jquery.com/jquery-3.1.1.js"
+  integrity="sha256-16cdPddA6VdVInumRGo6IbivbERE8p7CQR3HzTBuELA="
+  crossorigin="anonymous"></script>
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.2.9/semantic.css" />
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.2.9/semantic.min.js"></script>
+	<link rel="stylesheet" type="text/css" href="./static/style.css">
+  <script src="./static/Chart.js"></script>
+  <script src="./static/index.js"></script>
+</head>
+<body id="image">
+
+<div class="ui inverted fluid medium visible very wide two item labeled icon menu">
+
+    <a href="/search" class="item">
+      <i class="search icon" ></i>
+      Search
+    </a>
+    <a href="/video" class="item">
+      <i class="video play icon"></i>
+      Videos
+      </a>
+
+  </div>
+
+
+<div id="sear" class="ui container">
+
+	<form method="POST" action="/searc">
+	<div style="margin-top: 100px;" class="ui huge fluid action input">
+	  <input id="kk" type="text" name="query" placeholder="Search...">
+	  <!-- <div class=" ui massive inverted black button">Recommend</div> -->
+	  <div>
+    <input type="submit" value="Recommend" id="calculate" onclick="loading()" class="right attached ui huge inverted button">
+</div>
+	</div>
+  </form>
+
+<div style="margin-top: 50px;">
+
+<div class="ui one column stackable center aligned page grid">
+   <div class="column wide">
+
+
+
+<a id="bottom" target="blank"><div class="ui medium inverted segment">
+<p style="font-style: bold; font-size: 1.2em; " id="videodetails">
+</p></div></a>
+</div>
+</div>
+</div>
+
+</div>
+
+
+
+
+
+
+
+<div id="load">
+
+<div class="ui one column stackable center aligned page grid">
+   <div class="column wide">
+<svg class="spinner" width="65px" height="65px" viewBox="0 0 66 66" xmlns="http://www.w3.org/2000/svg">
+   <circle class="path" fill="none" stroke-width="6" stroke-linecap="round" cx="33" cy="33" r="30"></circle>
+</svg>
+   </div>
+</div>
+</div>
+
+
+</body>
+</html>
+<style>
+
+.spinner {
+  -webkit-animation: rotator 1.4s linear infinite;
+          animation: rotator 1.4s linear infinite;
+}
+
+@-webkit-keyframes rotator {
+  0% {
+    -webkit-transform: rotate(0deg);
+            transform: rotate(0deg);
+  }
+  100% {
+    -webkit-transform: rotate(270deg);
+            transform: rotate(270deg);
+  }
+}
+
+@keyframes rotator {
+  0% {
+    -webkit-transform: rotate(0deg);
+            transform: rotate(0deg);
+  }
+  100% {
+    -webkit-transform: rotate(270deg);
+            transform: rotate(270deg);
+  }
+}
+.path {
+  stroke-dasharray: 187;
+  stroke-dashoffset: 0;
+  -webkit-transform-origin: center;
+          transform-origin: center;
+  -webkit-animation: dash 1.4s ease-in-out infinite, colors 5.6s ease-in-out infinite;
+          animation: dash 1.4s ease-in-out infinite, colors 5.6s ease-in-out infinite;
+}
+
+@-webkit-keyframes colors {
+  0% {
+    stroke: #4285F4;
+  }
+  25% {
+    stroke: #DE3E35;
+  }
+  50% {
+    stroke: #F7C223;
+  }
+  75% {
+    stroke: #1B9A59;
+  }
+  100% {
+    stroke: #4285F4;
+  }
+}
+
+@keyframes colors {
+  0% {
+    stroke: #4285F4;
+  }
+  25% {
+    stroke: #DE3E35;
+  }
+  50% {
+    stroke: #F7C223;
+  }
+  75% {
+    stroke: #1B9A59;
+  }
+  100% {
+    stroke: #4285F4;
+  }
+}
+@-webkit-keyframes dash {
+  0% {
+    stroke-dashoffset: 187;
+  }
+  50% {
+    stroke-dashoffset: 46.75;
+    -webkit-transform: rotate(135deg);
+            transform: rotate(135deg);
+  }
+  100% {
+    stroke-dashoffset: 187;
+    -webkit-transform: rotate(450deg);
+            transform: rotate(450deg);
+  }
+}
+@keyframes dash {
+  0% {
+    stroke-dashoffset: 187;
+  }
+  50% {
+    stroke-dashoffset: 46.75;
+    -webkit-transform: rotate(135deg);
+            transform: rotate(135deg);
+  }
+  100% {
+    stroke-dashoffset: 187;
+    -webkit-transform: rotate(450deg);
+            transform: rotate(450deg);
+  }
+}
+
+::-webkit-scrollbar {
+    width: 10px;
+    background-color: #303030;
+}
+
+::-webkit-scrollbar-track {
+    -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
+    border-radius: 10px;
+    background-color: #303030;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: grey;
+    border-radius: 10px;
+    -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.5);
+}
+
+#sear{
+
+	margin-top: 100px;
+}
+.ui.inverted.segment, .ui.primary.inverted.segment {
+    background: rgba(27, 28, 29, 0.51);
+    color: rgba(255, 255, 255, 0.9);
+}
+.ui.input {
+  color: #fff;
+}
+.ui.input input {
+  margin: 0em;
+  max-width: 100%;
+  -webkit-box-flex: 1;
+  -ms-flex: 1 0 auto;
+  flex: 1 0 auto;
+  outline: none;
+  -webkit-tap-highlight-color: rgba(255, 255, 255, 0);
+  text-align: left;
+  line-height: 1.21428571em;
+  font-family: 'Lato', 'Helvetica Neue', Arial, Helvetica, sans-serif;
+  padding: 0.67857143em 1em;
+  background: rgba(255, 255, 255, 0);
+  border: 2px solid rgb(255, 255, 255);
+  color: rgba(255, 255, 255, 0.87);
+  border-radius: 0.28571429rem;
+  -webkit-transition: box-shadow 0.1s ease, border-color 0.1s ease;
+  transition: box-shadow 0.1s ease, border-color 0.1s ease;
+  box-shadow: none;
+}
+.ui.input.focus input,
+.ui.input input:focus {
+  border-color: #fff;
+  background:rgba(255, 255, 255, 0);
+  color: #fff;
+  box-shadow: none;
+}
+.ui.action.input:not([class*="left action"]) input:focus {
+  border-right-color: #ffffff !important;
+}
+.ui.inverted.selection.list > .item, .ui.inverted.selection.list > .item {
+    background: rgba(0, 0, 0, 0.35);
+    color: rgba(255, 255, 255, 0.5);
+}
+
+
+body{
+  background: no-repeat center center fixed;
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
+  -webkit-transition: background 300ms ease-in 200ms;
+  -moz-transition: background 300ms ease-in 200ms;
+  -o-transition: background 300ms ease-in 200ms;
+  transition: background 300ms ease-in 200ms;
+}
+
+
+
+</style>
+<script>
+var rank = "";
+$('#load').hide();
+	function loading(){
+		if (rank == ""){
+
+			$('#load').show();
+			console.log(rank);
+
+
+		}
+		else{
+
+		$('#load').hide();
+
+		}
+	}
+
+
+</script>
